@@ -25,24 +25,28 @@ const subscribeNoop = () => () => {};
  *  it doesn't surface as literal asterisks on the page. */
 function renderRich(text: string): ReactNode[] {
   const nodes: ReactNode[] = [];
-  const pattern = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
-  let last = 0;
   let key = 0;
-  let match: RegExpExecArray | null;
-  while ((match = pattern.exec(text)) !== null) {
-    if (match.index > last) nodes.push(text.slice(last, match.index));
-    if (match[1] !== undefined) {
-      nodes.push(
-        <strong key={key++} className="font-semibold text-[var(--ink)]">
-          {match[1]}
-        </strong>
-      );
-    } else {
-      nodes.push(<em key={key++}>{match[2]}</em>);
+  // Split on newlines so a hint can render as separate bulleted lines.
+  text.split("\n").forEach((line, li) => {
+    if (li > 0) nodes.push(<br key={`br${key++}`} />);
+    const pattern = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+    let last = 0;
+    let match: RegExpExecArray | null;
+    while ((match = pattern.exec(line)) !== null) {
+      if (match.index > last) nodes.push(line.slice(last, match.index));
+      if (match[1] !== undefined) {
+        nodes.push(
+          <strong key={key++} className="font-semibold text-[var(--ink)]">
+            {match[1]}
+          </strong>
+        );
+      } else {
+        nodes.push(<em key={key++}>{match[2]}</em>);
+      }
+      last = pattern.lastIndex;
     }
-    last = pattern.lastIndex;
-  }
-  if (last < text.length) nodes.push(text.slice(last));
+    if (last < line.length) nodes.push(line.slice(last));
+  });
   return nodes;
 }
 
