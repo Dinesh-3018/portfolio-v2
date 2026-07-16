@@ -1,0 +1,681 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  /* ---- Maker's Desk palette (cream paper + pastel accents) ---- */
+  --paper: #f5f2ea;
+  --card: #faf9f5;
+  --ink: #161616;
+  --ink-soft: rgba(22, 22, 22, 0.62);
+  --line: rgba(22, 22, 22, 0.14);
+  --accent-pink: #d8365d;
+  /* Text-safe pink: #d8365d is only 4.1–4.3:1 on paper/card, so small TEXT
+     roles use this darker relative (5.8:1+); fills/borders/stamps keep base. */
+  --accent-pink-ink: #b02649;
+  --accent-blue: #5fbee6;
+  --accent-yellow: #e3a92f;
+  --accent-green: #5fb57f;
+  --accent-mint: #a6d9bb;
+  --accent-cream: #efdca4;
+  --accent-brown: #45261c;
+  --accent-orange: #fe6e00;
+  --postal-red: #d8365d;
+  --tape: rgba(222, 196, 132, 0.5);
+
+  /* ---- Shadow vocabulary ---- */
+  --shadow-press-sm: 2px 2px 0 var(--ink);
+  --shadow-press: 4px 4px 0 var(--ink);
+  --shadow-press-lg: 6px 6px 0 var(--ink);
+  --shadow-lift: 0 14px 30px rgba(22, 22, 22, 0.16);
+  --shadow-paper: 0 1px 2px rgba(22, 22, 22, 0.1), 0 8px 20px rgba(22, 22, 22, 0.08);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Paper grain over the whole site — one fixed element, multiplied. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------- */
+/* Custom utilities                                                 */
+/* ---------------------------------------------------------------- */
+
+.font-display {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+}
+
+.font-hand {
+  font-family: var(--font-caveat), "Segoe Print", cursive;
+  /* Caveat has no italic and runs lighter than Shantell did; a medium
+     weight keeps small notes legible. */
+  font-weight: 500;
+}
+
+/* Pixel display type (Bitcount Prop Single) for the hero name. */
+.font-pixel {
+  font-family: var(--font-bitcount), monospace;
+}
+
+/* Uneven rubber-stamp ink: stepped-alpha noise mask. */
+.stamp-rough {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0.55 0.8 1 1 1 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+}
+
+/* Notched ticket silhouette (side punch-outs). */
+.ticket {
+  mask-image: radial-gradient(circle at left center, transparent 5px, black 5.5px),
+    radial-gradient(circle at right center, transparent 5px, black 5.5px);
+  mask-position: left center, right center;
+  mask-size: 51% 100%, 51% 100%;
+  mask-repeat: no-repeat;
+}
+
+/* Index-card ruling: hairline rows with one pink header rule. */
+/* Ruled-paper body for logbook notes: hairline rules spaced to the line
+   height so a running description sits ON the lines like a ledger. The rule
+   stop (26px) is tuned to fall just under each text baseline. */
+.logbook-rule {
+  line-height: 28px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 25px,
+    color-mix(in srgb, var(--ink) 14%, transparent) 25px,
+    color-mix(in srgb, var(--ink) 14%, transparent) 26px,
+    transparent 26px,
+    transparent 28px
+  );
+}
+
+/* Ink-pad press: object sinks into its hard shadow. */
+.press {
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+}
+
+.press:hover {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-press-sm);
+}
+
+.press:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Stitched seam along the bottom edge. */
+.stitch-b {
+  border-bottom: 1.5px dashed color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+/* ---------------------------------------------------------------- */
+/* Keyframes                                                        */
+/* ---------------------------------------------------------------- */
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes timeline-draw {
+  0% {
+    height: 0%;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  to {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  to {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.5) rotate(-20deg);
+  }
+  70% {
+    transform: scale(0.96) rotate(-11deg);
+  }
+  to {
+    opacity: 0.92;
+    transform: scale(1) rotate(-12deg);
+  }
+}
+
+@keyframes scribble-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes lightbox-zoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lightbox-snap-next {
+  0% {
+    opacity: 0.3;
+    transform: translate(28px) scale(0.985);
+  }
+  65% {
+    transform: translate(-4px) scale(1.003);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0) scale(1);
+  }
+}
+
+@keyframes lightbox-snap-prev {
+  0% {
+    opacity: 0.3;
+    transform: translate(-28px) scale(0.985);
+  }
+  65% {
+    transform: translate(4px) scale(1.003);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0) scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Animation helper classes                                         */
+/* ---------------------------------------------------------------- */
+
+.animate-fade-in {
+  opacity: 0;
+  animation: 0.4s ease-out forwards fade-in;
+}
+
+.animate-fade-in-up {
+  animation: 0.5s ease-out forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-1 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.15s forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-2 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.3s forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-3 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.45s forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-4 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.55s forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-5 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.65s forwards fade-in-up;
+}
+
+.animate-fade-in-up-delay-6 {
+  opacity: 0;
+  animation: 0.5s ease-out 0.75s forwards fade-in-up;
+}
+
+.animate-timeline-draw {
+  animation: 2.5s ease-out forwards timeline-draw;
+}
+
+.animate-status-pulse {
+  animation: 2.8s ease-in-out infinite status-pulse;
+}
+
+.animate-wiggle {
+  animation: 5s ease-in-out infinite wiggle;
+}
+
+.animate-float {
+  animation: 6s ease-in-out infinite float-y;
+}
+
+/* Paper scraps lift toward you on hover — grown from the pin (top center)
+   with a springy overshoot that settles, instead of the old flat wiggle.
+   translate/scale are individual transform properties, so they compose with
+   each scrap's own resting rotation (Tailwind rotate / idle sway) rather than
+   overriding it. */
+.wiggle-on-hover {
+  transform-origin: top center;
+  transition:
+    translate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .wiggle-on-hover:hover {
+    translate: 0 -7px;
+    scale: 1.04;
+  }
+}
+
+.animate-ticker {
+  animation: 50s linear infinite ticker-scroll;
+}
+
+.animate-stamp-in {
+  opacity: 0;
+  animation: 0.28s ease-out forwards stamp-in;
+}
+
+.animate-scribble-draw {
+  animation: 0.9s ease-out forwards scribble-draw;
+}
+
+.animate-lightbox-zoom {
+  animation: 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards lightbox-zoom;
+}
+
+.animate-lightbox-snap-next {
+  animation: 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards lightbox-snap-next;
+}
+
+.animate-lightbox-snap-prev {
+  animation: 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards lightbox-snap-prev;
+}
+
+/* ---------------------------------------------------------------- */
+/* Reduced motion                                                   */
+/* ---------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wiggle,
+  .animate-float,
+  .animate-status-pulse,
+  .animate-ticker,
+  .wiggle-on-hover {
+    transition: none;
+  }
+  .wiggle-on-hover:hover {
+    translate: 0;
+    scale: 1;
+  }
+
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-up-delay-1,
+  .animate-fade-in-up-delay-2,
+  .animate-fade-in-up-delay-3,
+  .animate-fade-in-up-delay-4,
+  .animate-fade-in-up-delay-5,
+  .animate-fade-in-up-delay-6,
+  .animate-timeline-draw,
+  .animate-stamp-in,
+  .animate-scribble-draw,
+  .animate-lightbox-zoom,
+  .animate-lightbox-snap-next,
+  .animate-lightbox-snap-prev {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer desk-surface additions (appended)                          */
+/* ---------------------------------------------------------------- */
+
+/* Outlined display type for the giant footer name watermark. */
+.outline-text {
+  -webkit-text-stroke: 2px var(--ink);
+  color: transparent;
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .outline-text {
+    color: var(--ink);
+  }
+}
+
+/* Stronger stamp entrance: drops from above the paper and slams flat,
+   with a small rebound. */
+@keyframes stamp-slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.2) rotate(8deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-2deg);
+  }
+  70% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-stamp-slam {
+  animation: 0.55s cubic-bezier(0.3, 0.9, 0.4, 1) both stamp-slam;
+}
+
+/* One-time faint ink ripple ring expanding behind the slammed stamp. */
+@keyframes ink-ripple {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  25% {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+.animate-ink-ripple {
+  animation: 0.9s ease-out 0.3s both ink-ripple;
+}
+
+/* Quick press-in for the click-to-stamp playground marks. */
+@keyframes stamp-pop {
+  0% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-stamp-pop {
+  animation: 0.24s cubic-bezier(0.22, 1, 0.36, 1) both stamp-pop;
+}
+
+/* Oldest playground stamp fading away (opacity only — the element keeps
+   its inline rotation transform). */
+@keyframes stamp-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-stamp-fade {
+  animation: 0.45s ease-out forwards stamp-fade;
+}
+
+/* Very slow idle sway for pinned paper (sticky note). */
+@keyframes sway {
+  0%,
+  to {
+    transform: rotate(0.6deg);
+  }
+  50% {
+    transform: rotate(-1.6deg);
+  }
+}
+
+.animate-sway {
+  animation: 9s ease-in-out infinite sway;
+}
+
+/* Paper plane rides the footer's dashed loop via CSS motion path. The
+   path() coordinates mirror LOOP_PATH in PaperPlane.tsx (680x300 box).
+   Without offset-path support the base rule parks it top-left instead. */
+.plane-flier {
+  position: absolute;
+  left: 7%;
+  top: 9%;
+  transform: rotate(14deg);
+}
+
+@supports (offset-path: path("M 0 0 L 1 1")) {
+  .plane-flier {
+    left: 0;
+    top: 0;
+    transform: none;
+    offset-path: path(
+      "M 340 30 C 520 30, 660 86, 660 150 C 660 214, 520 270, 340 270 C 160 270, 20 214, 20 150 C 20 86, 160 30, 340 30 Z"
+    );
+    offset-rotate: auto;
+    animation: 20s linear infinite plane-fly;
+  }
+}
+
+@keyframes plane-fly {
+  0% {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Hero rebuild additions (appended)                                  */
+/* ---------------------------------------------------------------- */
+
+/* Very slow drift for the hero annotation pills (rotation baked into the
+   pill itself stays; these only oscillate a few px / degrees on top). */
+@keyframes pill-drift-a {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(-5px) rotate(-1.5deg);
+  }
+}
+
+@keyframes pill-drift-b {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(4px) rotate(1.5deg);
+  }
+}
+
+.animate-pill-drift-a {
+  animation: 8s ease-in-out infinite alternate pill-drift-a;
+}
+
+.animate-pill-drift-b {
+  animation: 9s ease-in-out infinite alternate pill-drift-b;
+}
+
+/* CONTACT ME bar: a chevron loops horizontally through the dark circle.
+   Paused by default; the -0.5s-delayed copy parks dead-center, the other
+   copy waits offscreen inside the overflow-hidden circle. Runs on hover
+   of the .group bar (hover-capable pointers only). */
+/* CONTACT ME CTA: a paper plane lifts out of the envelope stamp on hover of
+   the .group button (hover-capable pointers only) — "your message takes
+   off." Idle state is hidden; each hover replays the launch once. */
+@keyframes cta-send {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg) scale(0.7);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(2px, -3px) rotate(6deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(22px, -30px) rotate(20deg) scale(0.95);
+  }
+}
+
+.cta-plane {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .group:hover .cta-plane {
+    animation: 0.75s ease-out forwards cta-send;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .cta-plane {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Decorative loops off; the hero pills rest at their base rotation. */
+  .animate-pill-drift-a,
+  .animate-pill-drift-b {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Purely decorative loops: off entirely (ripple ring stays invisible
+     via its base opacity-0; the plane parks at the path start). */
+  .animate-sway,
+  .animate-ink-ripple,
+  .plane-flier {
+    animation: none;
+  }
+
+  /* Content-bearing entrances still land, just instantly. */
+  .animate-stamp-slam,
+  .animate-stamp-pop,
+  .animate-stamp-fade {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer annotation fixes (appended)                                 */
+/* ---------------------------------------------------------------- */
+
+/* Sticky note torn off the desk: the scrap flies down-right, spinning
+   and fading. The --note-* vars carry the transform the drag ended on
+   so the tear continues from under the pointer instead of jumping. */
+@keyframes note-tear {
+  0% {
+    opacity: 1;
+    transform: translate(var(--note-x, 0px), var(--note-y, 0px)) rotate(var(--note-r, 0deg));
+  }
+  to {
+    opacity: 0;
+    transform: translate(calc(var(--note-x, 0px) + 130px), calc(var(--note-y, 0px) + 240px))
+      rotate(calc(var(--note-r, 0deg) + 26deg));
+  }
+}
+
+.animate-note-tear {
+  animation: 0.55s ease-in forwards note-tear;
+}
+
+/* Fresh sticky note pressed back onto the desk (quick stamp-in pop). */
+@keyframes note-return {
+  0% {
+    opacity: 0;
+    transform: scale(1.5) rotate(3deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.94) rotate(-1deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-note-return {
+  animation: 0.3s cubic-bezier(0.22, 1, 0.36, 1) both note-return;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The corner drag that triggers these is disabled under reduced
+     motion, so they should never fire — but if they do, land instantly. */
+  .animate-note-tear,
+  .animate-note-return {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+}
