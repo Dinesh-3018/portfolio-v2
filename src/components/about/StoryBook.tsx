@@ -184,7 +184,7 @@ export function StoryBook() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [dir, setDir] = useState<Dir>("next");
   const [liveMsg, setLiveMsg] = useState("");
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>("ta");
   // Active-language chapters (same length + `no` values in both languages, so
   // the index, counter, and flip machinery are identical). Tamil text gets the
   // Tamil serif face; its glyphs aren't in Fraunces/Space Grotesk/Caveat.
