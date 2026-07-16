@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Agentation } from "agentation";
-import { bitcount, caveat, fraunces, spaceGrotesk, spaceMono } from "./fonts";
+import { bitcount, caveat, fraunces, notoTamil, spaceGrotesk, spaceMono } from "./fonts";
 import LenisProvider from "@/lib/LenisProvider";
 import Header from "@/components/chrome/Header";
 import PerforationStrip from "@/components/chrome/PerforationStrip";
@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bitcount.variable} ${caveat.variable} pt-20 antialiased sm:pt-24`}
+        className={`${fraunces.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bitcount.variable} ${caveat.variable} ${notoTamil.variable} pt-20 antialiased sm:pt-24`}
       >
         <LenisProvider>
           <DeskCursor />

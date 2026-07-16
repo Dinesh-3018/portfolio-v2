@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { story } from "@/data/story";
+import { storyTa } from "@/data/storyTa";
 import StampBadge from "@/components/ui/StampBadge";
 import { prefersReducedMotion } from "@/lib/media";
 
@@ -11,6 +12,13 @@ const TOTAL = story.length;
 // page (5 chapters, not 6).
 const STORY_TOTAL = story.filter((c) => c.no !== "00").length;
 const STORY_TOTAL_LABEL = String(STORY_TOTAL).padStart(2, "0");
+
+/** The story reads in English or Tamil; the flip-book swaps content only. */
+type Lang = "en" | "ta";
+const LANGS: { id: Lang; label: string }[] = [
+  { id: "en", label: "English" },
+  { id: "ta", label: "தமிழ்" },
+];
 const subscribeNoop = () => () => {};
 
 /** Render inline **bold** and *italic* emphasis from the story markdown so
@@ -172,6 +180,13 @@ export function StoryBook() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [dir, setDir] = useState<Dir>("next");
   const [liveMsg, setLiveMsg] = useState("");
+  const [lang, setLang] = useState<Lang>("en");
+  // Active-language chapters (same length + `no` values in both languages, so
+  // the index, counter, and flip machinery are identical). Tamil text gets the
+  // Tamil serif face; its glyphs aren't in Fraunces/Space Grotesk/Caveat.
+  const chapters = lang === "ta" ? storyTa : story;
+  const isTa = lang === "ta";
+  const taFont = isTa ? { fontFamily: "var(--font-tamil)" } : undefined;
 
   // false on the server / first client render, true once hydrated — the
   // mount gate (same shape as DeskCursor) so SSR stays static + readable.
@@ -291,7 +306,7 @@ export function StoryBook() {
   function go(to: number) {
     if (to < 0 || to > TOTAL - 1 || to === index) return;
     if (phase !== "idle") return; // ignore input mid-turn
-    const chapter = story[to];
+    const chapter = chapters[to];
     setLiveMsg(`Chapter ${to + 1} of ${TOTAL}: ${chapter.title}`);
     playTurnSound(); // this is a real user turn — safe to sound
 
@@ -432,6 +447,36 @@ export function StoryBook() {
     >
       <style dangerouslySetInnerHTML={{ __html: SHUFFLE_CSS }} />
 
+      {/* Language toggle — swaps the story between English and Tamil. */}
+      <div className="mb-5 flex justify-center sm:justify-end">
+        <div
+          role="group"
+          aria-label="Story language"
+          className="inline-flex items-center rounded-full border border-[var(--ink)] bg-[var(--card)] p-0.5 shadow-[var(--shadow-press-sm)]"
+        >
+          {LANGS.map((l) => {
+            const active = lang === l.id;
+            return (
+              <button
+                key={l.id}
+                type="button"
+                onClick={() => setLang(l.id)}
+                aria-pressed={active}
+                className={[
+                  "rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-[0.12em] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-pink-ink)] motion-reduce:transition-none",
+                  active
+                    ? "bg-[var(--accent-yellow)] text-[var(--ink)]"
+                    : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
+                ].join(" ")}
+                style={l.id === "ta" ? { fontFamily: "var(--font-tamil)" } : { fontFamily: "var(--font-space-mono)" }}
+              >
+                {l.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Off-screen announcer for the current chapter. */}
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {liveMsg}
@@ -474,7 +519,7 @@ export function StoryBook() {
             {/* All chapters stack in one grid cell so the cell reserves the
                 tallest chapter's height — page turns never shift the layout. */}
             <div className="relative z-10 grid">
-              {story.map((ch, i) => {
+              {chapters.map((ch, i) => {
                 const active = i === index;
                 return (
                   <div
@@ -513,18 +558,34 @@ export function StoryBook() {
                         N&ordm;&nbsp;{ch.no}
                       </StampBadge>
 
-                      <h3 className="font-display mt-5 max-w-[18ch] text-3xl font-semibold leading-[1.1] tracking-tight text-[var(--ink)] sm:text-4xl">
+                      <h3
+                        className={[
+                          isTa ? "" : "font-display",
+                          "mt-5 max-w-[20ch] text-3xl font-semibold leading-[1.15] tracking-tight text-[var(--ink)] sm:text-4xl",
+                        ].join(" ")}
+                        style={taFont}
+                      >
                         {ch.title}
                       </h3>
 
-                      <div className="mt-6 max-w-prose space-y-5 text-[16px] leading-relaxed text-[var(--ink)]/90 sm:text-[17px]">
+                      <div
+                        className="mt-6 max-w-prose space-y-5 text-[16px] leading-relaxed text-[var(--ink)]/90 sm:text-[17px]"
+                        style={taFont}
+                      >
                         {ch.paragraphs.map((paragraph, p) => (
                           <p key={p}>{renderRich(paragraph)}</p>
                         ))}
                       </div>
 
                       {ch.note ? (
-                        <p className="font-hand mt-auto max-w-[34ch] pt-9 text-2xl leading-snug text-[var(--ink-soft)] sm:text-[1.7rem]">
+                        <p
+                          className={[
+                            isTa ? "" : "font-hand",
+                            "mt-auto max-w-[34ch] pt-9 leading-snug text-[var(--ink-soft)]",
+                            isTa ? "text-lg sm:text-xl" : "text-2xl sm:text-[1.7rem]",
+                          ].join(" ")}
+                          style={taFont}
+                        >
                           {ch.note}
                         </p>
                       ) : (
@@ -557,7 +618,7 @@ export function StoryBook() {
           aria-label="Jump to chapter"
           className="flex flex-wrap items-center justify-center gap-0.5 px-11"
         >
-          {story.map((ch, i) => {
+          {chapters.map((ch, i) => {
             const current = i === index;
             return (
               <button

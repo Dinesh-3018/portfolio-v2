@@ -1,4 +1,11 @@
-import { Bitcount_Prop_Single, Caveat, Fraunces, Space_Grotesk, Space_Mono } from "next/font/google";
+import {
+  Bitcount_Prop_Single,
+  Caveat,
+  Fraunces,
+  Noto_Serif_Tamil,
+  Space_Grotesk,
+  Space_Mono,
+} from "next/font/google";
 
 export const fraunces = Fraunces({
   subsets: ["latin"],
@@ -31,5 +38,13 @@ export const bitcount = Bitcount_Prop_Single({
 export const caveat = Caveat({
   subsets: ["latin"],
   variable: "--font-caveat",
+  display: "swap",
+});
+
+/** Tamil script face for the translated story (`--font-tamil`). Serif, to
+ *  pair with Fraunces; includes Latin so inline tech terms still render. */
+export const notoTamil = Noto_Serif_Tamil({
+  subsets: ["tamil", "latin"],
+  variable: "--font-tamil",
   display: "swap",
 });
