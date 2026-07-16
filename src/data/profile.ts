@@ -27,10 +27,12 @@ export const profile: Profile = {
 			"Before this, I was at Saptang Labs building tools that watched 4,500 Telegram channels and convincing our micro-frontend builds to finish 25% sooner.",
 		],
 		skillAreas: [
-			"Web Applications",
-			"RESTful APIs",
-			"Frontend",
-			"Microservices",
+			"SaaS Products",
+			"Product Engineering",
+			"Scalable Backends",
+			"APIs & Microservices",
+			"Auth & Identity",
+			"Full-Stack",
 		],
 	},
 	about: {

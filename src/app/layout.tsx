@@ -7,6 +7,7 @@ import Header from "@/components/chrome/Header";
 import PerforationStrip from "@/components/chrome/PerforationStrip";
 import Footer from "@/components/chrome/Footer";
 import DeskCursor from "@/components/chrome/DeskCursor";
+import TopLoader from "@/components/chrome/TopLoader";
 
 const SITE_URL = "https://dineshg.xyz";
 const SITE_TITLE = "Dinesh Ganesan — Full Stack Developer";
@@ -45,6 +46,7 @@ export default function RootLayout({
         className={`${fraunces.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bitcount.variable} ${caveat.variable} ${notoTamil.variable} pt-20 antialiased sm:pt-24`}
       >
         <LenisProvider>
+          <TopLoader />
           <DeskCursor />
           <Header />
           <PerforationStrip />
