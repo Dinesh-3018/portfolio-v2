@@ -16,7 +16,7 @@ export const story: StoryChapter[] = [
 		title: "Before we begin",
 		paragraphs: [
 			"Before the story starts, a thank you. None of this happened on my own. Every chapter in these pages exists because someone believed in me before I had proved myself. To my **Appa (Dad)** and **Amma (Mom)**—thank you for every sacrifice, every bit of encouragement, and every chance you gave me. This story is as much yours as it is mine.",
-			"Teachers who believed in a kid with 35 marks. My sisters, who showed me what hard work looked like. Friends who made every classroom feel like home. Strangers who said one sentence at exactly the right time. This is for all of you—thank you for believing in me before I believed in myself.",
+			"Teachers who believed in a kid with 35 marks. My family, who showed me what hard work looked like. Friends who made every classroom feel like home. Strangers who said one sentence at exactly the right time. This is for all of you—thank you for believing in me before I believed in myself.",
 		],
 		note: "I didn't get here alone.",
 	},

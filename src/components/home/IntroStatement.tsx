@@ -53,8 +53,17 @@ function ContactBar({ email }: { email: string }) {
         <EnvelopeGlyph />
         <PaperPlaneGlyph />
       </span>
-      <span className="font-mono text-sm font-bold uppercase tracking-[0.26em] text-white">
-        CONTACT ME
+      {/* On hover the label rolls up to reveal the actual address. */}
+      <span className="relative grid overflow-hidden text-white">
+        <span className="col-start-1 row-start-1 font-mono text-sm font-bold uppercase tracking-[0.26em] transition-transform duration-300 ease-out group-hover:-translate-y-[130%] motion-reduce:transition-none">
+          CONTACT ME
+        </span>
+        <span
+          aria-hidden="true"
+          className="col-start-1 row-start-1 translate-y-[130%] font-mono text-sm font-semibold lowercase tracking-[0.02em] transition-transform duration-300 ease-out group-hover:translate-y-0 motion-reduce:transition-none"
+        >
+          {email}
+        </span>
       </span>
     </a>
   );

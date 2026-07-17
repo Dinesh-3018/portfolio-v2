@@ -7,7 +7,7 @@ export const profile: Profile = {
 	role: "FULL STACK DEVELOPER",
 	location: "BLR · IST",
 	availability: "OPEN TO FULL-TIME SDE ROLES",
-	email: "dineshbuddypc@gmail.com",
+	email: "me@dineshg.xyz",
 	resumeUrl: "https://tinyurl.com/dinesh3018",
 	socials: [
 		{ label: "GITHUB", href: "https://github.com/Dinesh-3018" },
