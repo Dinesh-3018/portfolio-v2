@@ -44,6 +44,8 @@ function ContactBar({ email }: { email: string }) {
   return (
     <a
       href={`mailto:${email}`}
+      data-track="contact_clicked"
+      data-track-location="hero"
       className="group relative inline-flex items-center gap-3.5 rounded-[3px] border-2 border-[var(--ink)] bg-[var(--ink)] py-2.5 pl-2.5 pr-6 shadow-[var(--shadow-press)] transition-[transform,box-shadow] duration-150 ease-out hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[var(--shadow-press-sm)] focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[var(--accent-pink)] active:translate-x-[5px] active:translate-y-[5px] active:shadow-none motion-reduce:transition-none"
     >
       <span
@@ -80,6 +82,7 @@ export function IntroStatement() {
         <ContactBar email={profile.email} />
         <a
           href={profile.resumeUrl}
+          data-track="resume_clicked"
           target="_blank"
           rel="noopener noreferrer"
           data-hide-cursor="true"

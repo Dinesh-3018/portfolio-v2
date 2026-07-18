@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GuestbookEntry } from "@/server/guestbookStore";
+import { setPerson, track } from "@/lib/analytics";
 import GuestbookForm, { type GuestbookAuthView, type SubmitResult } from "./GuestbookForm";
 
 export interface GuestbookBoardProps {
@@ -95,6 +96,14 @@ function VisitorNote({ entry, index }: { entry: GuestbookEntry; index: number })
 export function GuestbookBoard({ initialEntries, auth }: GuestbookBoardProps) {
   const [entries, setEntries] = useState<GuestbookEntry[]>(initialEntries);
 
+  // Link the analytics person to the signed-in guestbook identity (no-op
+  // unless analytics is configured).
+  useEffect(() => {
+    if (auth.mode === "signed-in") {
+      setPerson({ guestbook_name: auth.name });
+    }
+  }, [auth]);
+
   async function submit(input: {
     name: string;
     message: string;
@@ -124,6 +133,7 @@ export function GuestbookBoard({ initialEntries, auth }: GuestbookBoardProps) {
       if (res.ok) {
         const data = (await res.json()) as { entry: GuestbookEntry };
         setEntries((prev) => prev.map((e) => (e.id === tempId ? data.entry : e)));
+        track("guestbook_note_pinned", { signed_in: signedIn });
         return { ok: true };
       }
       // Rollback: pull the optimistic card back off the board.

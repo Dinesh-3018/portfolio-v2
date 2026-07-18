@@ -22,9 +22,11 @@ const securityHeaders = [
       "frame-ancestors 'none'",
       "img-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' 'unsafe-inline'",
+      // PostHog loads its client + config from *.posthog.com (analytics is
+      // env-gated; these are harmless when the key is unset).
+      "script-src 'self' 'unsafe-inline' https://*.posthog.com",
       "font-src 'self' data:",
-      "connect-src 'self'",
+      "connect-src 'self' https://*.posthog.com",
       "form-action 'self'",
     ].join("; "),
   },

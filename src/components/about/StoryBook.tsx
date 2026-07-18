@@ -466,6 +466,8 @@ export function StoryBook() {
                 type="button"
                 onClick={() => setLang(l.id)}
                 aria-pressed={active}
+                data-track="story_language"
+                data-track-lang={l.id}
                 className={[
                   "rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-[0.12em] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-pink-ink)] motion-reduce:transition-none",
                   active

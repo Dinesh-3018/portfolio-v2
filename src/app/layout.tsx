@@ -8,6 +8,7 @@ import PerforationStrip from "@/components/chrome/PerforationStrip";
 import Footer from "@/components/chrome/Footer";
 import DeskCursor from "@/components/chrome/DeskCursor";
 import TopLoader from "@/components/chrome/TopLoader";
+import PostHogProvider from "@/components/analytics/PostHogProvider";
 
 const SITE_URL = "https://dineshg.xyz";
 const SITE_TITLE = "Dinesh Ganesan — Full Stack Developer";
@@ -45,14 +46,16 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bitcount.variable} ${caveat.variable} ${notoTamil.variable} pt-20 antialiased sm:pt-24`}
       >
-        <LenisProvider>
-          <TopLoader />
-          <DeskCursor />
-          <Header />
-          <PerforationStrip />
-          <main>{children}</main>
-          <Footer />
-        </LenisProvider>
+        <PostHogProvider>
+          <LenisProvider>
+            <TopLoader />
+            <DeskCursor />
+            <Header />
+            <PerforationStrip />
+            <main>{children}</main>
+            <Footer />
+          </LenisProvider>
+        </PostHogProvider>
         {process.env.NODE_ENV === "development" && (
           <Agentation endpoint="http://localhost:4747" />
         )}
