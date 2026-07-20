@@ -61,7 +61,7 @@ export const story: StoryChapter[] = [
 		title: "To be continued",
 		paragraphs: [
 			"One last thank you before this chapter closes — to my college friends and my seniors at Sri Eshwar. You turned four years into a second home, and somewhere in there I found a whole new family.",
-			"*A hint for the chapters still to come —*\n•  five corners\n•  a white heart 🤍\n•  Beethoven's Fifth in Morse (· · · —) — the letter \n•  an orange silk saree\n*…you'll know when you know.*",
+			"*A hint for the chapters still to come —*\n•  five corners\n•  a white heart 🤍\n•  Beethoven's Fifth in Morse (· · · —) — the letter V, for Victory\n•  an orange silk saree\n*…you'll know when you know.*",
 			"That's how I became an engineering student. How I became a developer — the late nights, the first job, the things that broke and taught me — that's a different story. And I'm still writing it.",
 		],
 		note: "the dev chapter is still being written →",

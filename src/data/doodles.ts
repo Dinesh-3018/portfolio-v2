@@ -271,20 +271,15 @@ const ENTRIES: DoodleEntry[] = [
   // Thaipusam: 2028 omitted on purpose — a nakshatra kshaya year where Poosam
   // prevails at neither sunrise, so the date genuinely splits. A gap beats a
   // coin-flip.
-  ...[
-    "2026-02-01",
-    "2027-01-22",
-    "2029-01-30",
-    "2030-01-19",
-    "2031-02-06",
-    "2032-01-27",
-  ].map((key) => ({
-    key,
-    emoji: "🦚",
-    label: "thaipusam",
-    title: "Thaipusam — தைப்பூசம், Murugan's vel",
-    priority: TAMIL_FESTIVAL,
-  })),
+  ...["2026-02-01", "2027-01-22", "2029-01-30", "2030-01-19", "2031-02-06", "2032-01-27"].map(
+    (key) => ({
+      key,
+      emoji: "🦚",
+      label: "thaipusam",
+      title: "Thaipusam — தைப்பூசம், Murugan's vel",
+      priority: TAMIL_FESTIVAL,
+    }),
+  ),
   ...[
     "2026-02-15",
     "2027-03-06",
@@ -319,20 +314,15 @@ const ENTRIES: DoodleEntry[] = [
     priority: TAMIL_FESTIVAL,
   })),
   // 2027 omitted: the lanes split on that year's Navaratri start.
-  ...[
-    "2026-10-11",
-    "2028-09-19",
-    "2029-10-08",
-    "2030-09-28",
-    "2031-10-17",
-    "2032-10-05",
-  ].map((key) => ({
-    key,
-    emoji: "🎎",
-    label: "golu begins",
-    title: "Navaratri / Golu begins — நவராத்திரி கொலு",
-    priority: TAMIL_FESTIVAL,
-  })),
+  ...["2026-10-11", "2028-09-19", "2029-10-08", "2030-09-28", "2031-10-17", "2032-10-05"].map(
+    (key) => ({
+      key,
+      emoji: "🎎",
+      label: "golu begins",
+      title: "Navaratri / Golu begins — நவராத்திரி கொலு",
+      priority: TAMIL_FESTIVAL,
+    }),
+  ),
   ...[
     "2026-10-20",
     "2027-10-09",
@@ -370,29 +360,22 @@ const ENTRIES: DoodleEntry[] = [
   // Solar-anchored, where North India's Kartik Purnima is lunar — they differ
   // in 6 of 7 years by up to 29 days. 2032 omitted: two Krittikas fall inside
   // that year's Karthigai month and the sources split.
-  ...[
-    "2026-11-24",
-    "2027-12-11",
-    "2028-12-01",
-    "2029-11-20",
-    "2030-12-08",
-    "2031-11-28",
-  ].map((key) => ({
-    key,
-    emoji: "🪔",
-    label: "karthigai",
-    title: "Karthigai Deepam — கார்த்திகை தீபம்",
-    priority: TAMIL_FESTIVAL,
-  })),
-  ...["2026-12-20", "2028-01-08", "2028-12-27", "2031-01-04", "2031-12-24"].map(
+  ...["2026-11-24", "2027-12-11", "2028-12-01", "2029-11-20", "2030-12-08", "2031-11-28"].map(
     (key) => ({
       key,
-      emoji: "🛕",
-      label: "vaikunta",
-      title: "Vaikunta Ekadasi — வைகுண்ட ஏகாதசி, the Paramapada Vasal opens",
+      emoji: "🪔",
+      label: "karthigai",
+      title: "Karthigai Deepam — கார்த்திகை தீபம்",
       priority: TAMIL_FESTIVAL,
     }),
   ),
+  ...["2026-12-20", "2028-01-08", "2028-12-27", "2031-01-04", "2031-12-24"].map((key) => ({
+    key,
+    emoji: "🛕",
+    label: "vaikunta",
+    title: "Vaikunta Ekadasi — வைகுண்ட ஏகாதசி, the Paramapada Vasal opens",
+    priority: TAMIL_FESTIVAL,
+  })),
   // Margazhi 1. NOT a bare "12-16": it only lands there for 2026-2032 because
   // the Tamil sunset rule absorbs the drift; 2028 and 2032 have the ingress
   // late on Dec 15 and roll forward. Label says "begins" because the tag marks
@@ -409,8 +392,7 @@ const ENTRIES: DoodleEntry[] = [
     key,
     emoji: "🎻",
     label: "margazhi begins",
-    title:
-      "மார்கழி Margazhi begins — Thiruppavai, kolams, the Chennai Music Season",
+    title: "மார்கழி Margazhi begins — Thiruppavai, kolams, the Chennai Music Season",
     priority: TAMIL_FESTIVAL,
   })),
   {
@@ -462,8 +444,7 @@ const ENTRIES: DoodleEntry[] = [
     key: "05-03",
     emoji: "⌨️",
     label: "sujatha",
-    title:
-      "சுஜாதா ரங்கராஜன் Sujatha — the writer who gave Tamil its computing words",
+    title: "சுஜாதா ரங்கராஜன் Sujatha — the writer who gave Tamil its computing words",
     priority: TAMIL_FIGURE,
   },
   // NOTE: the widespread "UN designated this World Students' Day" claim is
@@ -487,8 +468,7 @@ const ENTRIES: DoodleEntry[] = [
     key: "12-22",
     emoji: "🔢",
     label: "ramanujan",
-    title:
-      "Ramanujan Jayanti — Tamil Nadu State IT Day & National Mathematics Day",
+    title: "Ramanujan Jayanti — Tamil Nadu State IT Day & National Mathematics Day",
     priority: TAMIL_FIGURE,
   },
 ];
@@ -552,9 +532,7 @@ export function fullDateKey(date: Date): string {
  *  computing it is the whole conceit of the day, so don't pin it. */
 function isDay256(date: Date): boolean {
   const day256 = new Date(date.getFullYear(), 0, 256);
-  return (
-    date.getMonth() === day256.getMonth() && date.getDate() === day256.getDate()
-  );
+  return date.getMonth() === day256.getMonth() && date.getDate() === day256.getDate();
 }
 
 /**
@@ -570,8 +548,7 @@ function isDay256(date: Date): boolean {
 export function doodleFor(date: Date): DeskDoodle | null {
   const pinned = RANKED[fullDateKey(date)];
   const fixed = RANKED[dateKey(date)];
-  if (pinned && fixed)
-    return (fixed.priority > pinned.priority ? fixed : pinned).doodle;
+  if (pinned && fixed) return (fixed.priority > pinned.priority ? fixed : pinned).doodle;
   if (pinned) return pinned.doodle;
   if (fixed) return fixed.doodle;
   if (isDay256(date)) return PROGRAMMERS_DAY;
@@ -584,11 +561,7 @@ export function doodleForKey(key: string): DeskDoodle | null {
   if (exact) return exact;
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key);
   if (match) {
-    const asDate = new Date(
-      Number(match[1]),
-      Number(match[2]) - 1,
-      Number(match[3]),
-    );
+    const asDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
     return doodleFor(asDate);
   }
   return null;
