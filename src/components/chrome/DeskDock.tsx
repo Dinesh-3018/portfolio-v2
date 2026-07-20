@@ -7,6 +7,7 @@ import { profile } from "@/data/profile";
 import { prefersReducedMotion } from "@/lib/media";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
+import DeskDoodle from "./DeskDoodle";
 
 const subscribeNoop = () => () => {};
 
@@ -224,6 +225,10 @@ export function DeskDock() {
           </button>
         </div>
       </div>
+
+      {/* Day tag ("desk doodle") — dangles off the dock on special days
+          only; hides/reveals with the dock since it lives inside it. */}
+      <DeskDoodle />
 
       <MobileMenu open={menuOpen} pathname={pathname} id={MOBILE_MENU_ID} />
     </header>

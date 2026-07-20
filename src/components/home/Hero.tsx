@@ -2,6 +2,7 @@ import HandwrittenNote from "@/components/ui/HandwrittenNote";
 import Reveal from "@/components/ui/Reveal";
 import Squiggle from "@/components/ui/Squiggle";
 import { profile } from "@/data/profile";
+import Frangipani from "./Frangipani";
 import HeroClock from "./HeroClock";
 import NameInk from "./NameInk";
 
@@ -128,6 +129,10 @@ export function Hero() {
               <StickerPill bg="var(--accent-pink)" color="#ffffff" tilt={2}>
                 {profile.location}
               </StickerPill>
+              {/* A frangipani dropped beside the stickers — the song, and
+                  quietly the story's five-corners hint. Tilts, blooms, spins.
+                  Negative margins keep the row from inflating vertically. */}
+              <Frangipani className="-my-4 h-24 w-24 sm:h-[6.5rem] sm:w-[6.5rem]" />
             </div>
           </div>
 
@@ -156,6 +161,7 @@ export function Hero() {
                 </EmployerChip>
               </span>
             )}
+
           </div>
         </div>
       </Reveal>
