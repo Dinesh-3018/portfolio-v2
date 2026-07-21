@@ -2,6 +2,7 @@ import AboutTeaser from "@/components/home/AboutTeaser";
 import FeaturedWorks from "@/components/home/FeaturedWorks";
 import Hero from "@/components/home/Hero";
 import IntroStatement from "@/components/home/IntroStatement";
+import SupportBanner from "@/components/home/SupportBanner";
 import LetsTalk from "@/components/ui/LetsTalk";
 
 /**
@@ -14,6 +15,7 @@ import LetsTalk from "@/components/ui/LetsTalk";
 export default function Home() {
   return (
     <div>
+      <SupportBanner />
       <Hero />
       <IntroStatement />
       <AboutTeaser />
