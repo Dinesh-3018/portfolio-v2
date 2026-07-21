@@ -16,8 +16,9 @@ const STORY_TOTAL_LABEL = String(STORY_TOTAL).padStart(2, "0");
 /** The story reads in English or Tamil; the flip-book swaps content only. */
 type Lang = "en" | "ta";
 const LANGS: { id: Lang; label: string }[] = [
-  { id: "en", label: "English" },
+  // Tamil leads — it's the story's default and first language.
   { id: "ta", label: "தமிழ்" },
+  { id: "en", label: "English" },
 ];
 const subscribeNoop = () => () => {};
 
