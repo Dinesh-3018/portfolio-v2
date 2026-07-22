@@ -1,3 +1,4 @@
+import TapedImage from "@/components/ui/TapedImage";
 import { supportBanner } from "@/data/support";
 import StrikeDay from "./StrikeDay";
 
@@ -138,6 +139,24 @@ export function SupportBanner() {
             </p>
           ) : null}
         </div>
+
+        {/* The photo from the ground, taped to the placard, with his note
+            written under it in hand. */}
+        <figure className="mx-auto w-full max-w-[340px] flex-none lg:mx-0 lg:max-w-[320px]">
+          <TapedImage
+            image={supportBanner.photo}
+            rotate={-1.5}
+            className="aspect-[3/2] w-full"
+          />
+          <figcaption className="font-hand mt-3 -rotate-1 text-center text-xl leading-snug text-[#f5f2ea]/85">
+            {supportBanner.photo.note}
+            {supportBanner.photo.credit ? (
+              <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.12em] text-[#f5f2ea]/45">
+                photo: {supportBanner.photo.credit}
+              </span>
+            ) : null}
+          </figcaption>
+        </figure>
 
         <div className="flex flex-none flex-col items-start gap-4 lg:items-end">
           {/* The hashtag as a placard sticker, linking to the live tag */}

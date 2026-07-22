@@ -26,6 +26,15 @@ export const supportBanner = {
     since: "2026-06-28",
     note: "hospitalised · still fasting",
   },
+  /** Photo taped to the placard, with a handwritten note underneath.
+   *  Add the photographer's name to `credit` when known — it renders as a
+   *  small line under the note. */
+  photo: {
+    src: "/images/support/jantar-mantar.jpg",
+    alt: "Protesters at Jantar Mantar holding a sign reading 'The power of the people is stronger than the people in power'",
+    note: "my way of standing with them, from here — soon, out there too.",
+    credit: "",
+  },
   /** Circular rubber seal at the band's bottom-right: `center` sits big in
    *  the middle (split on spaces into lines), `rim` runs around the ring. */
   stamp: { center: "BAN NEET", rim: "WHAT IS DEMOCRACY?" },
