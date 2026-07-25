@@ -15,7 +15,7 @@ import LetsTalk from "@/components/ui/LetsTalk";
 export default function Home() {
   return (
     <div>
-      <SupportBanner />
+      {/* <SupportBanner /> */}
       <Hero />
       <IntroStatement />
       <AboutTeaser />
