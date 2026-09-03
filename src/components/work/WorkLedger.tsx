@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { sortProjectsNewestFirst } from "@/data/projects";
 import type { Project } from "@/data/types";
 import { useReveal } from "@/lib/useReveal";
 import FilterChips from "./FilterChips";
@@ -117,7 +118,7 @@ export interface WorkLedgerProps {
  * toggles the [hidden] attribute, so it's purely render-level.
  */
 export function WorkLedger({ projects }: WorkLedgerProps) {
-  const ordered = useMemo(() => [...projects].sort((a, b) => a.order - b.order), [projects]);
+  const ordered = useMemo(() => sortProjectsNewestFirst(projects), [projects]);
   const chips = useMemo(() => {
     const list: string[] = ["ALL"];
     for (const project of ordered) {

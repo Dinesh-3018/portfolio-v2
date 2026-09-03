@@ -85,41 +85,93 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "in-the-works",
+    slug: "buddyflare",
     order: 3,
-    title: "In the works",
-    tagline: "A new build is taking shape here — the full case file lands soon.",
-    cardBlurb: "Reserved for something I'm building right now. Real screenshots and the write-up drop in shortly.",
-    tags: ["IN PROGRESS"],
-    accent: "yellow",
+    title: "Buddyflare",
+    tagline: "Open-source logs and alerts that run inside your own Cloudflare account — with a closed beta planned for the end of September 2026.",
+    cardBlurb: "A self-hosted observability stack for realtime logs, searchable history, alerts, and agent-readable production context.",
+    tags: ["CLOUDFLARE", "OBSERVABILITY", "BETA SEP 2026"],
+    accent: "blue",
     archived: false,
-    cover: { src: "/images/projects/placeholder.svg", alt: "In the works — a placeholder for an upcoming project" },
+    featured: true,
+    cover: { src: "/images/projects/buddyflare.png", alt: "Buddyflare — Cloudflare-native logs and alerts" },
     gallery: [
-      { src: "/images/projects/placeholder.svg", alt: "In the works — a placeholder for an upcoming project" },
+      { src: "/images/projects/buddyflare.png", alt: "Buddyflare — Cloudflare-native logs and alerts" },
     ],
     meta: {
-      role: "Solo build",
-      platform: "TBA",
-      focus: "Coming soon",
+      role: "Creator · Solo build",
+      platform: "Cloudflare Workers · Durable Objects",
+      focus: "Logs · Alerts · MCP",
+      live: { label: "VISIT SITE", href: "https://buddy-clouds-site.dineshg3018.workers.dev/" },
     },
     problem: [
-      "This slot is a placeholder. There's a project in progress that I'll write up properly here — the problem it solves, how I approached it, and what shipped.",
+      "Cloudflare's built-in Worker logs are useful for recent debugging, but small teams still need alerting, longer history, and one place to inspect production signals across their apps.",
+      "Traditional observability platforms can introduce another vendor, another server, and a bill that grows with data volume. I wanted the useful parts of that stack to live in the same Cloudflare account as the applications it watches.",
     ],
     approach: [
-      "Details are on the way. Check back soon for the real screenshots and the full story behind this build.",
+      "I built Buddyflare as an open-source, serverless observability stack on Cloudflare Workers, Durable Objects, D1, R2, and Queues. Logs stream to the dashboard in realtime and archive into the owner's own infrastructure.",
+      "The product stays deliberately focused: searchable logs, practical alert channels, visible usage costs, and an MCP server that lets coding agents inspect production context without putting another hosted vendor in the middle.",
     ],
     built: [
-      "Full write-up coming soon.",
+      "Realtime live tail with searchable log history stored in the user's Cloudflare account.",
+      "Alert delivery to Slack, Discord, Telegram, email, webhooks, PagerDuty, and Opsgenie.",
+      "OpenTelemetry, Loki JSON, Vercel drain, and native JSON ingestion paths.",
+      "A built-in MCP server for scoped, agent-readable production logs.",
     ],
     changed: [
-      "Watch this space.",
+      "Turns the missing alerting and longer-term memory around Workers logs into a deployable product.",
+      "Keeps ownership, infrastructure, and metered usage inside the user's Cloudflare account.",
+      "Closed beta is planned for the end of September 2026.",
+    ],
+  },
+  {
+    slug: "voice-agent",
+    order: 4,
+    title: "Voice Agent",
+    tagline: "An in-progress multilingual voice agent exploring lower-cost conversations with room for higher concurrency.",
+    cardBlurb: "An Azure-based voice experiment focused on making multilingual agents less expensive to run and easier to scale.",
+    tags: ["VOICE AI", "AZURE", "IN PROGRESS"],
+    accent: "orange",
+    archived: false,
+    featured: true,
+    cover: { src: "/images/projects/placeholder.svg", alt: "Voice Agent — multilingual voice AI project under construction" },
+    gallery: [
+      { src: "/images/projects/placeholder.svg", alt: "Voice Agent — multilingual voice AI project under construction" },
+    ],
+    meta: {
+      role: "Solo R&D",
+      platform: "Azure AI · Realtime voice",
+      focus: "Multilingual · Cost · Scale",
+    },
+    problem: [
+      "Multilingual voice agents become expensive quickly, especially when every live conversation holds realtime speech and model capacity. Concurrency limits can become a product constraint before the experience is ready to scale.",
+      "I'm exploring whether the voice pipeline can be broken into more efficient pieces so each conversation costs less while the system supports more simultaneous sessions.",
+    ],
+    approach: [
+      "The project experiments with Azure speech and language models, measuring where latency, model usage, and session limits accumulate across a multilingual conversation.",
+      "The goal is a practical architecture that routes each part of the voice loop deliberately instead of paying the highest realtime cost for every stage. The implementation is still under construction, so results will be documented as they become repeatable.",
+    ],
+    built: [
+      "An evolving Azure-based pipeline for multilingual voice conversations.",
+      "Cost and concurrency experiments across the realtime voice loop.",
+      "A project structure ready to document benchmarks and trade-offs as the build matures.",
+    ],
+    changed: [
+      "Still under construction — no public demo or repository yet.",
+      "The current focus is proving a lower-cost path to multilingual voice at higher concurrency.",
     ],
   },
 ];
 
 export const featuredProjects: Project[] = projects
-  .filter((p) => p.featured)
+  .filter((p) => p.featured && !p.archived)
   .sort((a, b) => a.order - b.order);
+
+export function sortProjectsNewestFirst<T extends Pick<Project, "order">>(
+  collection: readonly T[]
+): T[] {
+  return [...collection].sort((a, b) => b.order - a.order);
+}
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

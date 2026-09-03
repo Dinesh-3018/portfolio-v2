@@ -35,7 +35,7 @@ export function StackSection() {
               key={group.label}
               className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6"
             >
-              <dt className="w-28 flex-shrink-0 pt-0.5">
+              <dt className="w-full flex-shrink-0 pt-0.5 sm:w-52">
                 <StampBadge size="sm" tone={ACCENT_INK[accent]} rotate={-2}>
                   {group.label}
                 </StampBadge>
